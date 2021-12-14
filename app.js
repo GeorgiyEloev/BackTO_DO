@@ -33,14 +33,14 @@ app.post("/createTask", (req, res) => {
     req.body.hasOwnProperty("text") &&
     req.body.hasOwnProperty("isCheck")
   ) {
-		const task = new Task(req.body);
+    const task = new Task(req.body);
     task.save().then(() => {
       Task.find().then((result) => {
         res.send({ data: result });
       });
     });
   } else {
-		res.status(422).send("Error! Неверные параметры!");
+    res.status(422).send("Error! Неверные параметры!");
   }
 });
 
@@ -60,10 +60,9 @@ app.delete("/deleteTask", (req, res) => {
 app.patch("/updateTask", (req, res) => {
   const body = req.body;
   if (
-    body.hasOwnProperty("_id") &&
-    (body.hasOwnProperty("name") ||
-      body.hasOwnProperty("text") ||
-      body.hasOwnProperty("isCheck"))
+    (body.hasOwnProperty("_id") && body.hasOwnProperty("name")) ||
+    body.hasOwnProperty("text") ||
+    body.hasOwnProperty("isCheck")
   ) {
     Task.updateOne({ _id: body._id }, body).then(() => {
       Task.find().then((result) => {
@@ -75,10 +74,10 @@ app.patch("/updateTask", (req, res) => {
   }
 });
 
-app.delete('/delAllTasks', (req, res) => {
-	Task.deleteMany().then((result) => {
-		res.send({ data: result });
-	});
+app.delete("/delAllTasks", (req, res) => {
+  Task.deleteMany().then((result) => {
+    res.send({ data: result });
+  });
 });
 
 app.listen(8000, () => {
