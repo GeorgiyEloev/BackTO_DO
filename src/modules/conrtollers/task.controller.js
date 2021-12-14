@@ -26,10 +26,9 @@ module.exports.createNewTask = (req, res) => {
 module.exports.changeTaskInfo = (req, res) => {
   const body = req.body;
   if (
-    body.hasOwnProperty("_id") &&
-    (body.hasOwnProperty("name") ||
-      body.hasOwnProperty("text") ||
-      body.hasOwnProperty("isCheck"))
+    (body.hasOwnProperty("_id") && body.hasOwnProperty("name")) ||
+    body.hasOwnProperty("text") ||
+    body.hasOwnProperty("isCheck")
   ) {
     Task.updateOne({ _id: body._id }, body).then(() => {
       Task.find().then((result) => {
