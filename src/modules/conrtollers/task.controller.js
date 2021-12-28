@@ -6,6 +6,17 @@ module.exports.getAllTasks = (req, res) => {
   });
 };
 
+module.exports.getOneTask = (req, res) => {
+	const id = req.query._id;
+	if (id) {
+		Task.findOne({ _id: id }).then((result) => {
+			res.send({ data: result });
+		})
+	}  else {
+    res.status(422).send("Error! Неверные параметры!");
+  }
+}
+
 module.exports.createNewTask = (req, res) => {
   if (
     req.body.hasOwnProperty("name") &&
@@ -54,7 +65,9 @@ module.exports.deleteTask = (req, res) => {
 };
 
 module.exports.deleteAllTask = (req, res) => {
-  Task.deleteMany().then((result) => {
-    res.send({ data: result });
+  Task.deleteMany().then(() => {
+    Task.find().then((result) => {
+      res.send({ data: result });
+    });
   });
 };
